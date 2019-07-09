@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using EA;
@@ -42,6 +43,35 @@ namespace Repository.Helpers
 
             // Returns null if no open repository with the provided GUID can be found
             return null;
+        }
+
+        public static IList<EA.Repository> GetOpenRepositories()
+        {
+            var repositoryList = new List<EA.Repository>();
+            
+            IMoniker[] monikers = new IMoniker[1];
+
+            GetRunningObjectTable(0, out var rot);
+            rot.EnumRunning(out var enumMoniker);
+
+            while (enumMoniker.Next(1, monikers, IntPtr.Zero) == 0)
+            {
+                CreateBindCtx(0, out var ctx);
+
+                monikers[0].GetDisplayName(ctx, null, out var name);
+
+                if (!name.Contains("Sparx.EA.App")) continue;
+
+                // Get the COM object instance
+                rot.GetObject(monikers[0], out var val);
+                var app = (App) val;
+                var rep = app.Repository;
+                
+                repositoryList.Add(rep);
+            }
+
+            // Returns null if no open repository with the provided GUID can be found
+            return repositoryList;
         }
     }
 }

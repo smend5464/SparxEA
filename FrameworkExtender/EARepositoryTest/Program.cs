@@ -6,13 +6,15 @@ namespace EARepositoryTest
     {
         public static void Main(string[] args)
         {
-            var repository = Repository.Helpers.Repository.GetRepository(args[0]);
-
             try
             {
-                var instance = string.Format($"Instance Guid: {repository.InstanceGUID}");
-                Console.WriteLine(instance);
-                repository.WriteOutput("Script", instance, 0);
+                var repository = Repository.Helpers.Repository.GetRepository(args[0]);
+                var openRepositories = Repository.Helpers.Repository.GetOpenRepositories();
+                
+                foreach (var rep in openRepositories)
+                {
+                    repository.WriteOutput("Script", rep.ConnectionString, 0);
+                }
             }
             catch (Exception e)
             {
