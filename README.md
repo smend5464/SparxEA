@@ -20,6 +20,6 @@ The repository objects returned are sourced directly from the operating system C
 
 - EARepository.Helpers is built as a dll and used in EARepositoryTest to provide a command line usage sample.
 - The script sample indicates how to call an executable and have it attach to the EA instance the script is run from
-- The Microsoft documentation indicates any version of the .NET framework > 4.5 should be able to support the functions.  I have not tested with anything other then the version in the Build Environment as that is the only development environment I have available.
+- The Microsoft documentation indicates any version of the .NET framework should be able to support the functions.  I have not tested with anything other then the version in the Build Environment as that is the only development environment I have available.
 - The Repository.instanceGUID appears to be dynamically generated when an EA instance is started
 - Everything needs to be built for the x86 platform architecture and **not x64**
