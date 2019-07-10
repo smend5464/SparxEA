@@ -15,6 +15,7 @@ namespace Repository.Helpers
         private static extern int GetRunningObjectTable(uint reserved,
             out IRunningObjectTable runningObjectTable);
 
+        // Gets a list of running Sparx instances and returns the one associated with the provided GUID
         public static EA.Repository GetRepository(string repositoryGuid)
         {
             IMoniker[] monikers = new IMoniker[1];
@@ -45,6 +46,7 @@ namespace Repository.Helpers
             return null;
         }
 
+        // Gets and returns the list running Sparx instances
         public static IList<EA.Repository> GetOpenRepositories()
         {
             var repositoryList = new List<EA.Repository>();
@@ -70,7 +72,7 @@ namespace Repository.Helpers
                 repositoryList.Add(rep);
             }
 
-            // Returns null if no open repository with the provided GUID can be found
+            // Returns an empty list
             return repositoryList;
         }
     }
