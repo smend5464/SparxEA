@@ -10,8 +10,6 @@ option explicit
 '
 sub run(appExe, appPath, params)
 	dim shell
-	dim objWMIService
-	dim colItems, objItem, pid, instanceCnt, cmdLine
 	
 	set shell = CreateObject("Shell.Application")
 
@@ -22,4 +20,4 @@ sub run(appExe, appPath, params)
 	shell.ShellExecute appExe, Repository.InstanceGUID & params, appPath, "", 0
 end sub
 
-run "EARepositoryTest.exe", "<path to the executable i.e. C:\....\Test\", ""
+run "EARepositoryTest.exe", "<path to the executable i.e. C:\....\Test\>", ""
