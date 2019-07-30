@@ -11,9 +11,6 @@ namespace EACom
         void Init(string instanceGuid);
 
         [DispId(2)]
-        int Request(string parameters);
-
-        [DispId(3)]
-        string Result(int identifier);
+        string Request(string parameters);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace EACom
 {
@@ -10,21 +11,23 @@ namespace EACom
     public class RequestClass : IRequest
     {
         private EA.Repository _repository;
-        private Dictionary<int, string> _result = new Dictionary<int, string>();
+        private string _result = string.Empty;
 
         public void Init(string instanceGuid)
         {
             _repository = Repository.Helpers.Repository.GetRepository(instanceGuid);
         }
 
-        public int Request(string parameters)
+        public string Request(string parameters)
         {
-            throw new System.NotImplementedException();
+            var task = Task.Run(async () => await Task.Run( () => HandleRequest(parameters)));
+            task.Wait();
+            return task.Result;
         }
 
-        public string Result(int identifier)
+        private string HandleRequest(string parameters)
         {
-            return _result.TryGetValue(identifier, out var value) ? value : string.Empty;
+            return "Hello World!";
         }
     }
 }
