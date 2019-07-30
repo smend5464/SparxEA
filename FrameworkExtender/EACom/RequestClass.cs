@@ -10,7 +10,6 @@ namespace EACom
     public class RequestClass : IRequest
     {
         private EA.Repository _repository;
-        private string _result = string.Empty;
 
         public void Init(string instanceGuid)
         {
