@@ -16,9 +16,9 @@ namespace Repository.Helpers
             out IRunningObjectTable runningObjectTable);
 
         // Gets a list of running Sparx instances and returns the one associated with the provided GUID
-        public static EA.Repository GetRepository(string repositoryGuid)
+        public static (int processID, EA.Repository repository) GetRepository(string repositoryGuid)
         {
-            IMoniker[] monikers = new IMoniker[1];
+            var monikers = new IMoniker[1];
 
             GetRunningObjectTable(0, out var rot);
             rot.EnumRunning(out var enumMoniker);
@@ -35,23 +35,26 @@ namespace Repository.Helpers
                 rot.GetObject(monikers[0], out var val);
                 var app = (App) val;
                 var rep = app.Repository;
+                
+                // Get the process id of the COM object instance
+                var pid = int.Parse(name.Split(':')[1]);
                 
                 // Check the provided GUID against this repository instance GUID
                 if (rep.InstanceGUID != repositoryGuid) continue;
 
-                return rep;
+                return (pid, rep);
             }
 
-            // Returns null if no open repository with the provided GUID can be found
-            return null;
+            // Returns -1 for the pid and null for the repository if no EA instance with provided instanceGUID is found
+            return (-1, null);
         }
 
         // Gets and returns the list running Sparx instances
-        public static IList<EA.Repository> GetOpenRepositories()
+        public static IEnumerable<(int processID, EA.Repository repository)> GetOpenRepositories()
         {
-            var repositoryList = new List<EA.Repository>();
+            var repositoryList = new List<(int processID, EA.Repository repository)>();
             
-            IMoniker[] monikers = new IMoniker[1];
+            var monikers = new IMoniker[1];
 
             GetRunningObjectTable(0, out var rot);
             rot.EnumRunning(out var enumMoniker);
@@ -69,7 +72,10 @@ namespace Repository.Helpers
                 var app = (App) val;
                 var rep = app.Repository;
                 
-                repositoryList.Add(rep);
+                // Get the process id of the COM object instance
+                var pid = int.Parse(name.Split(':')[1]);
+                
+                repositoryList.Add((pid, rep));
             }
 
             // Returns an empty list
